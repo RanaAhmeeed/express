@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 });
 
 //post req
-app.get("/", (req, res) => {
+app.post("/", (req, res) => {
     res.status(201).json({ msg: "Post Request" });
     console.log(req.body);
 });
