@@ -37,7 +37,7 @@ app.post("/", (req, res) => {
             name: req.body.name
         };
         database.users.push(newUser);
-        fs.writeFile("database.json", JSON.stringify(database), (err) => {
+        fs.writeFile("database.json", JSON.stringify(database, null, 2), (err) => {
             if (err) {
                 return res.status(400).json({ msg: "Error writing to database" });
             }
@@ -61,7 +61,7 @@ app.put("/:id", (req, res) => {
             const users = database["users"];
 
             users[users.findIndex((e) => e.id == req.params.id)].name = name;
-            fs.writeFile("database.json", JSON.stringify(database), (err) => {
+            fs.writeFile("database.json", JSON.stringify(database, null, 2), (err) => {
                 if (err) {
                     return res.status(400).json({ msg: "Error writing to database" });
                 }
@@ -77,24 +77,23 @@ app.put("/:id", (req, res) => {
 app.delete("/:id", (req, res) => {
     const id = req.params.id;
     fs.readFile("database.json", "utf8", (err, data) => {
-      if (err) res.status(400).json({ err });
-      if (data) {
-        let database = JSON.parse(data);
-        let users = database["users"];
-        users = users.filter((e) => e.id != id);
-  
-        fs.writeFile(
-          "database.json",
-          JSON.stringify(database),
-          (err) => {
-            if (err) {
-              res.status(400).json({ err });
-            } else {
-              res.status(201).json({ msg: "user has been deleted", user: database });
-            }
-          }
-        );
-      }
+        if (err) res.status(400).json({ err });
+        if (data) {
+            let database = JSON.parse(data);
+            let users = database["users"];
+            users = users.filter((e) => e.id != id);
+            console.log( users)
+            fs.writeFile(
+                "database.json",
+                JSON.stringify(users, null, 2),
+                (err) => {
+                    if (err) {
+                        res.status(400).json({ err });
+                    } else {
+                        res.status(201).json({ msg: "user has been deleted", user: users });
+                    }
+                }
+            );
+        }
     });
-  });
-  
+});
