@@ -85,7 +85,7 @@ app.delete("/:id", (req, res) => {
             console.log( users)
             fs.writeFile(
                 "database.json",
-                JSON.stringify(users, null, 2),
+                JSON.stringify({users}, null, 2),
                 (err) => {
                     if (err) {
                         res.status(400).json({ err });
